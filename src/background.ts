@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             request.rate,
             request.stop,
             request.stem,
+            request.autoBook
           ],
         })
         .then(() => sendResponse({ success: true }))
@@ -48,7 +49,8 @@ function start(
   payout: string,
   rate: string,
   stop: string,
-  stem: string
+  stem: string,
+  autoBook: boolean
 ) {
   const refreshTimeNum = Number(refreshTime);
   refreshPage = window.setInterval(async () => {
@@ -76,8 +78,9 @@ function start(
         console.log(page_payout, page_stop, page_rate, new Date());
         console.log(payout, stop, rate);
 
+        console.log("Auto: ", autoBook)
       
-      if (Number.parseFloat(payout) <= Number.parseFloat(page_payout) &&
+      if (autoBook && Number.parseFloat(payout) <= Number.parseFloat(page_payout) &&
         Number.parseFloat(rate) <= Number.parseFloat(page_rate) &&
           Number.parseFloat(stop) <= Number.parseFloat(page_stop)) {
         const currentYear = new Date().getFullYear();

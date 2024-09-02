@@ -53,10 +53,11 @@ export default function App() {
     const rate = rateInput ? rateInput.value : undefined;
     const stop = stopInput ? stopInput.value : undefined;
     const stem = stemInput ? stemInput.value : undefined;
+    const autoBook = isOn1;
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
         const activeTab = tabs[0];
-        chrome.runtime.sendMessage({ action: `${buttonTxt}`, tabId: activeTab.id, refreshTime: refreshTime, payout: payout, rate: rate, stop: stop, stem: stem });
+        chrome.runtime.sendMessage({ action: `${buttonTxt}`, tabId: activeTab.id, refreshTime: refreshTime, payout: payout, rate: rate, stop: stop, stem: stem, autoBook });
       } else {
         console.error("No active tab found");
       }
