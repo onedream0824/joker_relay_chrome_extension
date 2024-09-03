@@ -1,5 +1,5 @@
 import "@/assets/styles/tailwind.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [buttonTxt, setButtonTxt] = useState("Start");
@@ -13,6 +13,14 @@ export default function Dashboard() {
     stop: 0,
     stem: 0,
   });
+
+  useEffect(() => {
+    chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function(result) {
+      setData({ refreshTime: result?.refreshTime, payout: result?.payout, rate: result?.rate, stop: result?.stop, stem: result?.stem })
+      setIsOn1(result?.autoBook);
+      setButtonTxt(result.action === "Start" ? "Stop" : "Start");
+    });
+  }, [])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -46,6 +54,12 @@ export default function Dashboard() {
           stem: data.stem,
           autoBook,
         });
+        
+        chrome.storage.sync.set({
+          ...data,
+          autoBook: autoBook,
+          action: `${buttonTxt}`,
+        })
       } else {
         console.error("No active tab found");
       }

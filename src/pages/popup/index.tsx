@@ -15,17 +15,19 @@ export default function App() {
       const tab = await getCurrentTab();
       if (tab.url === "https://relay.amazon.co.uk/loadboard/search") {
         setIsOnLoadboard(true);
+      } else {
+        setIsOnLoadboard(false);
       }
+    };
+
+    const getCurrentTab = async () => {
+      const queryOptions = { active: true, currentWindow: true };
+      const [tab] = await chrome.tabs.query(queryOptions);
+      return tab;
     };
 
     checkCurrentUrl();
   }, []);
-
-  const getCurrentTab = async () => {
-    const queryOptions = { active: true, currentWindow: true };
-    const [tab] = await chrome.tabs.query(queryOptions);
-    return tab;
-  };
 
   const handleSetting = () => {
     setIsSetting(!isSetting);
