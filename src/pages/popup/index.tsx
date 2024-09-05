@@ -5,12 +5,20 @@ import { useEffect, useState } from "react";
 // import Setting from "./Settings";
 import Wrongboard from "./Wrongboard";
 import Dashboard from "./Dashboard";
+import Pricing from "./Pricing";
+
+const LANDING_PAGE_LINK = "https://ea12-191-96-208-68.ngrok-free.app";
 
 export default function App() {
   const [isOnLoadboard, setIsOnLoadboard] = useState(false);
-  // const [isSetting, setIsSetting] = useState(false);
+  const [email, setEmail] = useState("");
+  const [validate, setValidate] = useState(false);
 
   useEffect(() => {
+    chrome.storage.sync.get(['validate'], function (result) {
+      setValidate(result?.validate)
+    });
+
     const checkCurrentUrl = async () => {
       const tab = await getCurrentTab();
       if (tab.url === "https://relay.amazon.co.uk/loadboard/search") {
@@ -27,11 +35,52 @@ export default function App() {
     };
 
     checkCurrentUrl();
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length > 0) {
+        const activeTab = tabs[0];
+        chrome.runtime.sendMessage(
+          { action: "GET_EMAIL", tabId: activeTab.id },
+          function (response) {
+            setEmail(response.email);
+          }
+        );
+      } else {
+        console.error("No active tab found");
+      }
+    });
   }, []);
 
-  // const handleSetting = () => {
-  //   setIsSetting(!isSetting);
-  // };
+  useEffect(() => {
+    if (email) {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(
+            `${LANDING_PAGE_LINK}/api/auth/validate`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email }),
+            }
+          );
+
+          const data = await response.json();
+
+          setValidate(data);
+          chrome.storage.sync.set({ validate: true })
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [email]);
+
+  const redirectToLanding = () => {
+    window.open(`${LANDING_PAGE_LINK}`);
+  };
 
   return (
     <div className="w-[400px] h-auto bg-gray-50 shadow-lg overflow-hidden">
@@ -46,7 +95,8 @@ export default function App() {
         </div>
       </div>
       {isOnLoadboard ? (
-        <Dashboard />
+        validate ?
+          <Dashboard /> : <Pricing redirectToLanding={redirectToLanding} />
       ) : (
         <Wrongboard />
       )}

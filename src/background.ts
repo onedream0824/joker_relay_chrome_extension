@@ -42,7 +42,28 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       return true;
     }
   }
+  if (request.action === "GET_EMAIL") {
+    if (request.tabId) {
+    chrome.scripting
+        .executeScript({
+          target: { tabId: request.tabId },
+          func: getEmail,
+        })
+        .then((results) => sendResponse({ email: results[0].result }))
+        .catch((err) => sendResponse({ success: false, error: err }));
+
+    return true;
+      } else {
+      sendResponse({ success: false, error: "No tab ID provided" });
+      return true;
+    }
+  }
 });
+
+function getEmail() {
+  const email = (document.getElementById("case-user-email") as HTMLInputElement).value;
+  return email;
+}
 
 function start(
   refreshTime: string,
@@ -56,6 +77,15 @@ function start(
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
+
+  const playBellSound = () => {
+    const audio = new Audio(
+      chrome.runtime.getURL("src/assets/bell.wav")
+    );
+    audio.play().catch((error) => {
+      console.error("Error playing sound:", error);
+    });
+  }
 
   const button = document.querySelector(
     'button[mdn-popover-offset="-8"]'
@@ -184,14 +214,7 @@ function start(
                 refreshPage = null;
                 chrome.runtime.sendMessage({ action: "RefreshStopped" });
               }
-              function playBellSound() {
-                const audio = new Audio(
-                  chrome.runtime.getURL("src/assets/bell.wav")
-                );
-                audio.play().catch((error) => {
-                  console.error("Error playing sound:", error);
-                });
-              }
+              
               playBellSound();
               break;
             }

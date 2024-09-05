@@ -65,7 +65,7 @@ var json = {
             matches: ["<all_urls>"],
         },
     ],
-    permissions: ["activeTab", "storage", "contextMenus", "scripting"],
+    permissions: ["activeTab", "storage", "contextMenus", "scripting", "tabs"],
     content_scripts: [
         {
             js: ["src/contentScript/index.tsx"],
