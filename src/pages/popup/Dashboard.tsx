@@ -20,6 +20,21 @@ export default function Dashboard() {
       setIsOn1(result?.autoBook);
       setButtonTxt(result.action === "Start" ? "Stop" : "Start");
     });
+
+    const listener = (request: { action: string }) => {
+      if (request.action === "RefreshStopped") {
+        chrome.storage.sync.set({
+          action: "Stop",
+        })
+        setButtonTxt("Start");
+      }
+    };
+
+    chrome.runtime.onMessage.addListener(listener);
+
+    return () => {
+      chrome.runtime.onMessage.removeListener(listener);
+    };
   }, [])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
