@@ -15,7 +15,7 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function(result) {
+    chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function (result) {
       setData({ refreshTime: result?.refreshTime, payout: result?.payout, rate: result?.rate, stop: result?.stop, stem: result?.stem })
       setIsOn1(result?.autoBook);
       setButtonTxt(result.action === "Start" ? "Stop" : "Start");
@@ -69,7 +69,7 @@ export default function Dashboard() {
           stem: data.stem,
           autoBook,
         });
-        
+
         chrome.storage.sync.set({
           ...data,
           autoBook: autoBook,
@@ -82,28 +82,28 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="bg-yellow-100 p-6 space-y-4 rounded-lg shadow-md">
+    <div className="bg-[#f3f1ef] p-6 space-y-4 rounded-lg shadow-lg">
       <div className="space-y-4">
         <div className="flex space-x-4">
           <div className="flex-1">
-            <label className="text-gray-800 text-sm">Refresher(ms)</label>
+            <label className="text-gray-700 text-sm">Refresher (ms)</label>
             <input
               id="refresh_time"
               type="number"
               name="refreshTime"
-              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-yellow-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="5000"
               value={data.refreshTime}
               onChange={onChange}
             />
           </div>
           <div className="flex-1">
-            <label className="text-gray-800 text-sm">Stop</label>
+            <label className="text-gray-700 text-sm">Stop</label>
             <input
               id="stop"
               type="number"
               name="stop"
-              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-yellow-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="2"
               value={data.stop}
               onChange={onChange}
@@ -112,24 +112,24 @@ export default function Dashboard() {
         </div>
         <div className="flex space-x-4">
           <div className="flex-1">
-            <label className="text-gray-800 text-sm">Payout</label>
+            <label className="text-gray-700 text-sm">Payout</label>
             <input
               id="payout"
               type="number"
               name="payout"
-              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-yellow-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="1000"
               value={data.payout}
               onChange={onChange}
             />
           </div>
           <div className="flex-1">
-            <label className="text-gray-800 text-sm">Rate</label>
+            <label className="text-gray-700 text-sm">Rate</label>
             <input
               id="rate"
               type="number"
               name="rate"
-              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-yellow-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="2.2"
               value={data.rate}
               onChange={onChange}
@@ -138,12 +138,12 @@ export default function Dashboard() {
         </div>
 
         <div className="w-1/2">
-          <label className="text-gray-800 text-sm">First Pickup in (min)</label>
+          <label className="text-gray-700 text-sm">First Pickup in (min)</label>
           <input
             id="stem"
             type="number"
             name="stem"
-            className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-yellow-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
             placeholder="10"
             value={data.stem}
             onChange={onChange}
@@ -155,26 +155,22 @@ export default function Dashboard() {
           <div className="text-sm font-medium text-gray-800">Randomize</div>
           <div
             onClick={toggleSwitch1}
-            className={`ml-auto cursor-pointer w-16 h-8 flex items-center rounded-full p-1 transition-all duration-300 ease-in-out ${
-              isOn ? "bg-green-500" : "bg-red-500"
-            }`}
+            className={`ml-auto cursor-pointer w-16 h-8 flex items-center rounded-full p-1 transition-all duration-300 ease-in-out ${isOn ? "bg-[#73bfb8]" : "bg-[#f25c54]"
+              }`}
           >
             <span
-              className={`text-white text-sm font-semibold ml-2 transition-opacity duration-300 ${
-                isOn ? "opacity-100" : "opacity-0"
-              }`}
+              className={`text-white text-sm font-semibold ml-2 transition-opacity duration-300 ${isOn ? "opacity-100" : "opacity-0"
+                }`}
             >
               ON
             </span>
             <div
-              className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${
-                isOn ? "translate-x-8" : "translate-x-0"
-              }`}
+              className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "translate-x-8" : "translate-x-0"
+                }`}
             />
             <span
-              className={`text-white text-sm font-semibold mr-2 transition-opacity duration-300 ${
-                isOn ? "opacity-0" : "opacity-100"
-              }`}
+              className={`text-white text-sm font-semibold mr-2 transition-opacity duration-300 ${isOn ? "opacity-0" : "opacity-100"
+                }`}
             >
               OFF
             </span>
@@ -184,26 +180,22 @@ export default function Dashboard() {
           <div className="text-sm font-medium text-gray-800">Auto Book</div>
           <div
             onClick={toggleSwitch2}
-            className={`ml-auto cursor-pointer w-16 h-8 flex items-center rounded-full p-1 transition-all duration-300 ease-in-out ${
-              isOn1 ? "bg-green-500" : "bg-red-500"
-            }`}
+            className={`ml-auto cursor-pointer w-16 h-8 flex items-center rounded-full p-1 transition-all duration-300 ease-in-out ${isOn1 ? "bg-[#73bfb8]" : "bg-[#f25c54]"
+              }`}
           >
             <span
-              className={`text-white text-sm font-semibold ml-2 transition-opacity duration-300 ${
-                isOn1 ? "opacity-100" : "opacity-0"
-              }`}
+              className={`text-white text-sm font-semibold ml-2 transition-opacity duration-300 ${isOn1 ? "opacity-100" : "opacity-0"
+                }`}
             >
               ON
             </span>
             <div
-              className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${
-                isOn1 ? "translate-x-8" : "translate-x-0"
-              }`}
+              className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${isOn1 ? "translate-x-8" : "translate-x-0"
+                }`}
             />
             <span
-              className={`text-white text-sm font-semibold mr-2 transition-opacity duration-300 ${
-                isOn1 ? "opacity-0" : "opacity-100"
-              }`}
+              className={`text-white text-sm font-semibold mr-2 transition-opacity duration-300 ${isOn1 ? "opacity-0" : "opacity-100"
+                }`}
             >
               OFF
             </span>
@@ -211,13 +203,14 @@ export default function Dashboard() {
         </div>
       </div>
       <div
-        className="cursor-pointer transition-all duration-300 bg-yellow-500 py-2 text-center text-lg text-white rounded-2xl hover:bg-yellow-400 transform hover:scale-105 hover:shadow-lg hover:rotate-1"
+        className="cursor-pointer transition-transform duration-300 bg-[#e64a19] py-2 text-center text-lg text-white rounded-2xl hover:bg-[#ff7247] transform hover:scale-105 hover:shadow-lg hover:translate-y-1"
         onClick={() => {
           handleStart();
         }}
       >
         {buttonTxt}
       </div>
+
     </div>
   );
 }

@@ -10,7 +10,7 @@ export default function Settings({ handleSetting }: Props) {
       {/* Add your settings components here */}
       <button
         onClick={handleSetting}
-        className="bg-red-500 text-white rounded px-4 py-2"
+        className="bg-[#FFCCBC] text-white rounded px-4 py-2"
       >
         Close Settings
       </button>
