@@ -57,6 +57,16 @@ function start(
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
+  const button = document.querySelector(
+    'button[mdn-popover-offset="-8"]'
+  ) as HTMLButtonElement;
+
+  if (button) {
+    button.click();
+  } else {
+    console.error("Button not found!");
+  }
+
   refreshPage = window.setInterval(async () => {
     const count = document
       .querySelector(".search-results-summary__result-summary--show p")
@@ -75,50 +85,51 @@ function start(
 
     console.log(loadCards.length, highlightCards.length, matched_loads.length);
 
-    for (let index = 0; index < Number(count); index++) {
-      if (Number(count) <= index) return;
+    if (autoBook) {
+      for (let index = 0; index < Number(count); index++) {
+        if (Number(count) <= index) return;
 
-      const page_start_time =
-        matched_loads[index].getElementsByClassName(
-          "wo-card-header__components"
-        )[1]?.textContent || "";
+        const page_start_time =
+          matched_loads[index].getElementsByClassName(
+            "wo-card-header__components"
+          )[1]?.textContent || "";
 
-      const page_stop: string | null =
-        matched_loads[index].getElementsByClassName("css-kabd3k")[1]
-          .textContent;
+        const page_stop: string | null =
+          matched_loads[index].getElementsByClassName("css-kabd3k")[1]
+            .textContent;
 
-      const page_payout: string | undefined = (
-        matched_loads[index].getElementsByClassName("wo-total_payout")[0] ||
-        matched_loads[index].getElementsByClassName(
-          "wo-total_payout__modified-load-increase-attr"
-        )[0]
-      )?.textContent?.substr(1);
+        const page_payout: string | undefined = (
+          matched_loads[index].getElementsByClassName("wo-total_payout")[0] ||
+          matched_loads[index].getElementsByClassName(
+            "wo-total_payout__modified-load-increase-attr"
+          )[0]
+        )?.textContent?.substr(1);
 
-      const page_rate: string | undefined = matched_loads[index]
-        .getElementsByClassName("wo-card-header__components")[6]
-        ?.textContent?.split("/")[0]
-        .substr(1);
+        const page_rate: string | undefined = matched_loads[index]
+          .getElementsByClassName("wo-card-header__components")[6]
+          ?.textContent?.split("/")[0]
+          .substr(1);
 
-      console.log("Refresh: ", refreshTime, refreshTimeNum);
-      console.log(
-        "Stop: ",
-        stop,
-        page_stop,
-        Number.parseFloat(stop) <= Number.parseFloat(page_stop || "0")
-      );
-      console.log(
-        "Payout: ",
-        payout,
-        page_payout,
-        Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0")
-      );
-      console.log(
-        "Rate: ",
-        rate,
-        page_rate,
-        Number.parseFloat(rate) <= Number.parseFloat(page_rate || "0")
-      );
-      if (autoBook) {
+        console.log("Refresh: ", refreshTime, refreshTimeNum);
+        console.log(
+          "Stop: ",
+          stop,
+          page_stop,
+          Number.parseFloat(stop) <= Number.parseFloat(page_stop || "0")
+        );
+        console.log(
+          "Payout: ",
+          payout,
+          page_payout,
+          Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0")
+        );
+        console.log(
+          "Rate: ",
+          rate,
+          page_rate,
+          Number.parseFloat(rate) <= Number.parseFloat(page_rate || "0")
+        );
+
         if (
           autoBook &&
           Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0") &&
@@ -171,31 +182,31 @@ function start(
               if (refreshPage !== null) {
                 clearInterval(refreshPage);
                 refreshPage = null;
-
                 chrome.runtime.sendMessage({ action: "RefreshStopped" });
               }
-
+              function playBellSound() {
+                const audio = new Audio(
+                  chrome.runtime.getURL("src/assets/bell.wav")
+                );
+                audio.play().catch((error) => {
+                  console.error("Error playing sound:", error);
+                });
+              }
+              playBellSound();
               break;
             }
           }
         }
-        const button = document.querySelector(
-          'button[mdn-popover-offset="-8"]'
-        ) as HTMLButtonElement;
-        if (button) {
-          button.click();
-        } else {
-          console.error("Button not found!");
-        }
+      }
+    } else {
+      const button = document.querySelector(
+        'button[mdn-popover-offset="-8"]'
+      ) as HTMLButtonElement;
+
+      if (button) {
+        button.click();
       } else {
-        const button = document.querySelector(
-          'button[mdn-popover-offset="-8"]'
-        ) as HTMLButtonElement;
-        if (button) {
-          button.click();
-        } else {
-          console.error("Button not found!");
-        }
+        console.error("Button not found!");
       }
     }
   }, refreshTimeNum);
