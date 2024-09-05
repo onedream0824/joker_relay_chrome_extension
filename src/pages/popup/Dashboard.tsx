@@ -7,7 +7,7 @@ export default function Dashboard() {
   const [isOn1, setIsOn1] = useState(false); // Auto Book
 
   const [data, setData] = useState({
-    refreshTime: 0,
+    refreshTime: 1000,
     payout: 0,
     rate: 0,
     stop: 0,
@@ -16,9 +16,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function (result) {
-      console.log("+++++++++++++++++Dashboard", result?.autoBook);
-      setData({ refreshTime: result?.refreshTime, payout: result?.payout, rate: result?.rate, stop: result?.stop, stem: result?.stem })
-      setIsOn1(result?.autoBook);
+      setData({ refreshTime: result?.refreshTime || 1000, payout: result?.payout || 0, rate: result?.rate || 0, stop: result?.stop || 0, stem: result?.stem || 0 })
+      setIsOn1(result?.autoBook || false);
       setButtonTxt(result.action === "Start" ? "Stop" : "Start");
     });
 
@@ -92,6 +91,7 @@ export default function Dashboard() {
               id="refresh_time"
               type="number"
               name="refreshTime"
+              required={true}
               className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="5000"
               value={data.refreshTime}
@@ -104,6 +104,7 @@ export default function Dashboard() {
               id="stop"
               type="number"
               name="stop"
+              required={true}
               className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="2"
               value={data.stop}
@@ -118,6 +119,7 @@ export default function Dashboard() {
               id="payout"
               type="number"
               name="payout"
+              required={true}
               className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="1000"
               value={data.payout}
@@ -130,6 +132,7 @@ export default function Dashboard() {
               id="rate"
               type="number"
               name="rate"
+              required={true}
               className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
               placeholder="2.2"
               value={data.rate}
@@ -144,6 +147,7 @@ export default function Dashboard() {
             id="stem"
             type="number"
             name="stem"
+            required={true}
             className="w-full rounded-lg px-4 py-2 text-sm text-gray-800 border border-[#ffccbc] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#bf360c]"
             placeholder="10"
             value={data.stem}

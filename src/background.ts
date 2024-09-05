@@ -3,9 +3,6 @@ let refreshPage: number | null; // Declare a variable to hold the interval ID
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   if (request.action === "Start") {
     if (request.tabId) {
-      let autoBook = false;
-      if (request.autoBook == undefined) autoBook = false;
-      else autoBook = request.autoBook;
       chrome.scripting
         .executeScript({
           target: { tabId: request.tabId },
@@ -16,7 +13,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             request.rate,
             request.stop,
             request.stem,
-            autoBook,
+            request.autoBook,
           ],
         })
         .then(() => sendResponse({ success: true }))
