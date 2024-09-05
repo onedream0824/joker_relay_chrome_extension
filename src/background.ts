@@ -114,6 +114,7 @@ function start(
     console.log(loadCards.length, highlightCards.length, matched_loads.length);
 
     if (autoBook) {
+      let status = false;
       for (let index = 0; index < Number(count); index++) {
         if (Number(count) <= index) return;
 
@@ -138,26 +139,6 @@ function start(
           ?.textContent?.split("/")[0]
           .substr(1);
 
-        console.log("Refresh: ", refreshTime, refreshTimeNum);
-        console.log(
-          "Stop: ",
-          stop,
-          page_stop,
-          Number.parseFloat(stop) <= Number.parseFloat(page_stop || "0")
-        );
-        console.log(
-          "Payout: ",
-          payout,
-          page_payout,
-          Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0")
-        );
-        console.log(
-          "Rate: ",
-          rate,
-          page_rate,
-          Number.parseFloat(rate) <= Number.parseFloat(page_rate || "0")
-        );
-
         if (
           autoBook &&
           Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0") &&
@@ -175,6 +156,7 @@ function start(
           console.log("Left mins: ", leftMinutes, stem);
 
           if (leftMinutes < Number(stem)) {
+            status = true;
             const open_button = matched_loads[index].getElementsByClassName(
               "css-e9glob"
             )[0] as HTMLElement;
@@ -219,16 +201,11 @@ function start(
           }
         }
       }
-    } else {
-      const button = document.querySelector(
-        'button[mdn-popover-offset="-8"]'
-      ) as HTMLButtonElement;
-
-      if (button) {
+      if (status == false) {
         button.click();
-      } else {
-        console.error("Button not found!");
       }
+    } else {
+      button.click();
     }
   }, refreshTimeNum);
 }
