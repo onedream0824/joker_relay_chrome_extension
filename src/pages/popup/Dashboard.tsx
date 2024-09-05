@@ -16,6 +16,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function (result) {
+      console.log("+++++++++++++++++Dashboard", result?.autoBook);
       setData({ refreshTime: result?.refreshTime, payout: result?.payout, rate: result?.rate, stop: result?.stop, stem: result?.stem })
       setIsOn1(result?.autoBook);
       setButtonTxt(result.action === "Start" ? "Stop" : "Start");

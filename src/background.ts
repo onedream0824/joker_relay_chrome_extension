@@ -1,9 +1,11 @@
 let refreshPage: number | null; // Declare a variable to hold the interval ID
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
-  console.log(request.action);
   if (request.action === "Start") {
     if (request.tabId) {
+      let autoBook = false;
+      if (request.autoBook == undefined) autoBook = false;
+      else autoBook = request.autoBook;
       chrome.scripting
         .executeScript({
           target: { tabId: request.tabId },
@@ -14,7 +16,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             request.rate,
             request.stop,
             request.stem,
-            request.autoBook,
+            autoBook,
           ],
         })
         .then(() => sendResponse({ success: true }))
@@ -44,7 +46,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   }
   if (request.action === "GET_EMAIL") {
     if (request.tabId) {
-    chrome.scripting
+      chrome.scripting
         .executeScript({
           target: { tabId: request.tabId },
           func: getEmail,
@@ -52,8 +54,8 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
         .then((results) => sendResponse({ email: results[0].result }))
         .catch((err) => sendResponse({ success: false, error: err }));
 
-    return true;
-      } else {
+      return true;
+    } else {
       sendResponse({ success: false, error: "No tab ID provided" });
       return true;
     }
@@ -61,7 +63,8 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
 });
 
 function getEmail() {
-  const email = (document.getElementById("case-user-email") as HTMLInputElement).value;
+  const email = (document.getElementById("case-user-email") as HTMLInputElement)
+    .value;
   return email;
 }
 
@@ -79,13 +82,11 @@ function start(
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const playBellSound = () => {
-    const audio = new Audio(
-      chrome.runtime.getURL("src/assets/bell.wav")
-    );
+    const audio = new Audio(chrome.runtime.getURL("src/assets/bell.wav"));
     audio.play().catch((error) => {
       console.error("Error playing sound:", error);
     });
-  }
+  };
 
   const button = document.querySelector(
     'button[mdn-popover-offset="-8"]'
@@ -214,7 +215,7 @@ function start(
                 refreshPage = null;
                 chrome.runtime.sendMessage({ action: "RefreshStopped" });
               }
-              
+
               playBellSound();
               break;
             }
