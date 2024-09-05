@@ -57,6 +57,15 @@ function start(
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
+  const playBellSound = () => {
+    const audio = new Audio(
+      chrome.runtime.getURL("src/assets/bell.wav")
+    );
+    audio.play().catch((error) => {
+      console.error("Error playing sound:", error);
+    });
+  }
+
   const button = document.querySelector(
     'button[mdn-popover-offset="-8"]'
   ) as HTMLButtonElement;
@@ -184,14 +193,7 @@ function start(
                 refreshPage = null;
                 chrome.runtime.sendMessage({ action: "RefreshStopped" });
               }
-              function playBellSound() {
-                const audio = new Audio(
-                  chrome.runtime.getURL("src/assets/bell.wav")
-                );
-                audio.play().catch((error) => {
-                  console.error("Error playing sound:", error);
-                });
-              }
+              
               playBellSound();
               break;
             }
