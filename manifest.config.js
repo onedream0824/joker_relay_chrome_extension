@@ -59,6 +59,12 @@ var json = {
         default_icon: "src/assets/icon.png",
         default_popup: "src/pages/popup/index.html",
     },
+    web_accessible_resources: [
+        {
+            resources: ["src/assets/bell.wav"],
+            matches: ["<all_urls>"],
+        },
+    ],
     permissions: ["activeTab", "storage", "contextMenus", "scripting"],
     content_scripts: [
         {
