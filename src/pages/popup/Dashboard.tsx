@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [buttonTxt, setButtonTxt] = useState("Start");
-  const [isOn, setIsOn] = useState(false); // Randomize
-  const [isOn1, setIsOn1] = useState(false); // Auto Book
+  const [isOn, setIsOn] = useState(false);
+  const [isOn1, setIsOn1] = useState(false);
 
   const [data, setData] = useState({
     refreshTime: 1000,
@@ -15,9 +15,10 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'action'], function (result) {
+    chrome.storage.sync.get(['refreshTime', 'payout', 'rate', 'stop', 'stem', 'autoBook', 'randomize', 'action'], function (result) {
       setData({ refreshTime: result?.refreshTime || 1000, payout: result?.payout || 0, rate: result?.rate || 0, stop: result?.stop || 0, stem: result?.stem || 0 })
       setIsOn1(result?.autoBook || false);
+      setIsOn(result?.randomize || false);
       setButtonTxt(result.action === "Start" ? "Stop" : "Start");
     });
 
@@ -55,6 +56,7 @@ export default function Dashboard() {
       setButtonTxt("Start");
     }
 
+    const randomize = isOn;
     const autoBook = isOn1;
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
@@ -67,12 +69,14 @@ export default function Dashboard() {
           rate: data.rate,
           stop: data.stop,
           stem: data.stem,
+          randomize,
           autoBook,
         });
 
         chrome.storage.sync.set({
           ...data,
           autoBook: autoBook,
+          randomize: randomize,
           action: `${buttonTxt}`,
         })
       } else {

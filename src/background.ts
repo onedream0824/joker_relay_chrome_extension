@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             request.rate,
             request.stop,
             request.stem,
+            request.randomize,
             request.autoBook,
           ],
         })
@@ -71,9 +72,14 @@ function start(
   rate: string,
   stop: string,
   stem: string,
+  randomize: boolean,
   autoBook: boolean
 ) {
   const refreshTimeNum = Number(refreshTime);
+  if (randomize == true) {
+    const randomNumber = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
+    refreshTime = refreshTime + randomNumber;
+  }
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
