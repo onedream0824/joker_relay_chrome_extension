@@ -88,8 +88,10 @@ export default function App() {
       <div className="p-4 bg-[#ff5722] flex items-center relative">
         <img
           src="../../assets/icon.png"
-          alt="Description"
-          className="absolute w-12 h-12 left-4"
+          alt="Joker Relay"
+          width="70px"
+          height="70px"
+          className="absolute left-4"
         />
         <div className="text-2xl w-full text-white text-center py-1 font-bold">
           Joker Relay
