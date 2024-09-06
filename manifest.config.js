@@ -46,8 +46,8 @@ var _a = version
     .split(/[.-]/), major = _a[0], minor = _a[1], patch = _a[2], _b = _a[3], label = _b === void 0 ? "0" : _b;
 var json = {
     manifest_version: 3,
-    name: "chrome-extension-init-react",
-    description: "Chrome Extension Quick Start Project",
+    name: "Joker Relay",
+    description: "Amazon Relay Auto Booking extension",
     // up to four numbers separated by dots
     version: "".concat(major, ".").concat(minor, ".").concat(patch, ".").concat(label),
     // semver is OK in "version_name"

@@ -13,8 +13,8 @@ const [major, minor, patch, label = "0"] = version
   .split(/[.-]/);
 const json: ManifestV3Export = {
   manifest_version: 3,
-  name: "chrome-extension-init-react",
-  description: "Chrome Extension Quick Start Project",
+  name: "Joker Relay",
+  description: "Amazon Relay Auto Booking extension",
   // up to four numbers separated by dots
   version: `${major}.${minor}.${patch}.${label}`,
   // semver is OK in "version_name"
