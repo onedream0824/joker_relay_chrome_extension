@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import "@/assets/styles/tailwind.css";
 import { useEffect, useState } from "react";
-import { Settings } from "lucide-react";
-import Setting from "./Settings";
+// import { Settings } from "lucide-react";
+// import Setting from "./Settings";
 import Wrongboard from "./Wrongboard";
 import Dashboard from "./Dashboard";
 import Pricing from "./Pricing";
@@ -12,7 +12,7 @@ const LANDING_PAGE_LINK = "https://ea12-191-96-208-68.ngrok-free.app";
 export default function App() {
   const [isOnLoadboard, setIsOnLoadboard] = useState(false);
   const [email, setEmail] = useState("");
-  const [settingVisible, setSettingVisible] = useState(false);
+  // const [settingVisible, setSettingVisible] = useState(false);
   const [validate, setValidate] = useState(false);
 
   useEffect(() => {
@@ -94,14 +94,14 @@ export default function App() {
         <div className="text-2xl w-full text-white text-center py-1 font-bold">
           Joker Relay
         </div>
-        {isOnLoadboard && validate ? <div className="flex items-center">
+        {/* {isOnLoadboard && validate ? <div className="flex items-center">
           <Settings
             className="absolute w-8 h-8 right-4 text-white cursor-pointer mr-4"
             onClick={() => { setSettingVisible(true); }}
           />
-        </div> : <></>}
+        </div> : <></>} */}
       </div>
-      {isOnLoadboard ? (
+      {/* {isOnLoadboard ? (
         validate ? (
           settingVisible ? <Setting handleSetting={() => setSettingVisible(false)} redirectToLanding={redirectToLanding} /> : <Dashboard />
         ) : (
@@ -109,7 +109,12 @@ export default function App() {
         )
       ) : (
         <Wrongboard />
-      )}
+      )} */}
+      {
+        isOnLoadboard ? (
+          validate ? <Dashboard /> : <Pricing redirectToLanding={redirectToLanding} />
+        ) : <Wrongboard />
+      }
     </div>
   );
 }
