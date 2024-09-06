@@ -146,10 +146,9 @@ function start(
           .substr(1);
 
         if (
-          autoBook &&
+          Number.parseFloat(stop) == Number.parseFloat(page_stop || "0") &&
           Number.parseFloat(payout) <= Number.parseFloat(page_payout || "0") &&
-          Number.parseFloat(rate) <= Number.parseFloat(page_rate || "0") &&
-          Number.parseFloat(stop) <= Number.parseFloat(page_stop || "0")
+          Number.parseFloat(rate) <= Number.parseFloat(page_rate || "0")
         ) {
           const currentYear = new Date().getFullYear();
           const startDate = new Date(
