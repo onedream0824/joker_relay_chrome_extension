@@ -7,7 +7,7 @@ import Wrongboard from "./Wrongboard";
 import Dashboard from "./Dashboard";
 import Pricing from "./Pricing";
 
-const LANDING_PAGE_LINK = "https://ea12-191-96-208-68.ngrok-free.app";
+const LANDING_PAGE_LINK = "https://www.jokerelay.com/";
 
 export default function App() {
   const [isOnLoadboard, setIsOnLoadboard] = useState(false);
@@ -68,7 +68,6 @@ export default function App() {
           );
 
           const data = await response.json();
-
           setValidate(data);
           chrome.storage.sync.set({ validate: true })
         } catch (error) {

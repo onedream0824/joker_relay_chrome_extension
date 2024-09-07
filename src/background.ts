@@ -191,8 +191,8 @@ function start(
               // confirmNoBtn.click();
 
               // Click confirm btn
-              // const confirmBtn = selectedWorkSheet.querySelector('button.css-n0loux') as HTMLButtonElement;
-              // confirmBtn.click();
+              const confirmBtn = selectedWorkSheet.querySelector('button.css-n0loux') as HTMLButtonElement;
+              confirmBtn.click();
 
               if (refreshPage !== null) {
                 clearInterval(refreshPage);
